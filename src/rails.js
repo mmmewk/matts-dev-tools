@@ -32,7 +32,7 @@ async function migrate(options = {}) {
   options = Object.assign({ bundler: true }, options);
   let command = 'rails db:migrate';
   if (options.version !== undefined) command += ` VERSION=${options.version}`;
-  let context = 'Migrating Database';
+  let context = 'Migrate Database';
   if (options.version !== undefined) context += ` to version: ${options.version}`;
   return await execCommand(command, { context, ...options });
 }

@@ -2,7 +2,7 @@
   "name": "matts-dev-tools",
   "version": "1.0.4",
   "description": "Developer tools for rails developers using git and jira",
-  "main": "utils.js",
+  "main": "src/utils.js",
   "repository": "https://github.com/mmmewk/matts-dev-tools.git",
   "author": "Matthew Koppe",
   "license": "MIT",
@@ -18,8 +18,8 @@
     "temp": "^0.9.2"
   },
   "bin": {
-    "gci": "./git-checkout-interactive.js",
-    "gcb": "./git-clean-branches.js"
+    "gci": "./src/git-checkout-interactive.js",
+    "gcb": "./src/git-clean-branches.js"
   },
   "scripts": {
     "test": "yarn jest"
