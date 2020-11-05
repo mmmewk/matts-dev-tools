@@ -2,6 +2,8 @@ const { exec, log } = require('./utils');
 const colors = require('colors');
 const commandExists = require('command-exists').sync;
 
+const ticketRegex = /\w+-\d{4}/;
+
 async function getTickets() {
   if (!commandExists('jira')) {
     log(`
@@ -22,7 +24,7 @@ async function getTickets() {
     const ticketInfo = string.split(/\s{2,}/);
     if (ticketInfo.length < 3) return tickets;
     const num = ticketInfo[0].trim();
-    if (!num.match(/EN-\d{4}/)) return tickets;
+    if (!num.match(ticketRegex)) return tickets;
     tickets[num] = {
       num,
       status: ticketInfo[1].trim(),
@@ -34,9 +36,7 @@ async function getTickets() {
 
 // given a branch get the ticket corresponding to that branch
 function findTicket(branch, tickets) {
-  const ticketMatch = branch.match(/(EN-\d{4})/);
-  if (!ticketMatch) return undefined;
-  return tickets[ticketMatch[0]];
+  return Object.values(tickets).find((ticket) => branch.match(ticket.num));
 }
 
 module.exports = {
