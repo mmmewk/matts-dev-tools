@@ -5,9 +5,9 @@ Developer tools making life in a rails, git, jira environment easier
 `yarn global add matts-dev-tools`
 
 # jira integration
-`yarn global add jira-cl`
-create a [api token](https://id.atlassian.com/manage-profile/security/api-tokens)
-Run `jira` and input your api token as the password
+- `yarn global add jira-cl`
+- create a [api token](https://id.atlassian.com/manage-profile/security/api-tokens)
+- Run `jira` and input your api token as the password
 
 # errors
 if your project has a `/tmp` folder it will store error messages in `/tmp/errors.txt`.
