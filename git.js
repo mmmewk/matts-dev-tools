@@ -1,6 +1,7 @@
 const { exec, execCommand, prompt } = require('./utils');
 const { migrate, diffMigrations } = require('./rails');
 const replace = require('lodash/replace');
+const fs = require('fs');
 
 async function getCurrentBranch(options = {}) {
   const { stdout: currentBranch } = await exec('git rev-parse --abbrev-ref HEAD', options);
@@ -26,16 +27,19 @@ const migrationPrompt = 'The branch you want to checkout has a different databas
 async function checkout(branch, options = {}) {
   if (!branch) return;
   let migrateUp = false;
-  if (options.migrate && await prompt(migrationPrompt)) {
+  if (options.migrate) {
     // current branches migrations, oldest common migration between the two, and other branches migration
     let { current, common, other } = await diffMigrations(branch, options);
-    if (current !== undefined) {
+    let migrationConfirmed = false;
+    // confirm that the user wants to migrate
+    if (current !== undefined || other !== undefined) migrationConfirmed = await prompt(migrationPrompt);
+    if (current !== undefined && migrationConfirmed) {
       await migrate({ version: common, ...options });
-      // when you migrate down it modifies structure.sql
-      await exec('git checkout db/structure.sql');
+      if (fs.existsSync('db/structure.sql')) await exec('git checkout db/structure.sql');
+      if (fs.existsSync('db/schema.rb')) await exec('git checkout db/schema.rb');
     }
     // migrate up if "other" branch has a migration this branch doesn't
-    migrateUp = (other !== undefined);
+    migrateUp = (other !== undefined && migrationConfirmed);
   }
   const command = `git checkout ${options.create ? '-b' : ''} ${branch}`;
   const action = options.create ? 'Create' : 'Checkout';
