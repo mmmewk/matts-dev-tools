@@ -12,13 +12,9 @@ const fs = require('fs');
 async function run () {
   const currentBranch = await getCurrentBranch();
 
-  const testAgainst = await promptSelect('Test changes against which base?', [{ title: 'Last Commit', value: currentBranch }, { title: 'Master', value: 'origin/master' }, 'none']);
-
-  if (testAgainst === 'none') process.exit(0);
-
+  const testAgainst = await promptSelect('Test changes against which base?', [{ title: 'Last Commit', value: currentBranch }, { title: 'Master', value: 'origin/master' }]);
 
   const rubyFiles = await getChangedFiles({ extensions: ['.rb', '.rake'], branch: testAgainst });
-    // TODO: some files aren't lintable check again
   const lintableFiles = rubyFiles.filter(file => file.match(/^(app|lib|spec|config)\//))
 
   // look for spec files by assuming the filenames match up
