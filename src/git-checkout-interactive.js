@@ -47,6 +47,7 @@ async function run () {
   if (branch.create) {
     const ticketType = await promptSelect('What type of ticket is this?', ['feature', 'bug', 'chore', 'hotfix']);
     branch = `${ticketType}/${branch.num}`;
+    if (!ticketType) process.exit(1);
   }
 
   // TODO: set up a configuration file so users can explicitly set this on a project to project basis
