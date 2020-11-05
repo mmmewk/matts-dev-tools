@@ -35,3 +35,28 @@ Boots up an interactive terminal where you can clean out old branches.
 - allows you to mark a set of branches for deletion (old branches you had forgotten about and are already merged)
 - reconfirms that you want to delete that set of branches
  
+# Utils
+TODO: Document usage
+- execCommand executes a shell command and silences the console output replacing it with a spinner
+- runInteractive will prompt you to select a set of commands from a list to run. It will fail instantly if any command fails
+- prompt accepts a y/n question and returns a boolean base on user feadback
+- promptSelect prompts the user to select an option from a passed in array
+- getChangedFiles returns all files that git thinks have changed compared to a specific branch. Filterable by file extension and change type
+
+# Jira
+TODO: Document usage
+- getTickets returns the tickets that the command `jira issue` returns
+- findTicket given a branch name and the return of getTickets, finds the ticket corresponding to the branch if one exists
+
+# Rails
+TODO: Document usage
+- getCurrentMigration gets the current migration version for a rails database
+- getMigrations returns an array of migration version numbers
+- diffMigrations returns { current: oldest migration that doesn't exist in other branch, common: oldest migration thats common between the two, other: oldest migration that doesn't exist in current branch }
+- migrate migrates to a specific version or all the way up
+
+# Git
+TODO: Document usage
+- getCurrentBranch returns current branch name
+- getBranches returns branch objects with flag, branch name and commit info
+- checkout checks if other branch has differences in database migrations, migrates database properly, checkouts out other branch (or creates if in create mode), migrates up if neeeded
