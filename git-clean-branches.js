@@ -11,6 +11,12 @@ async function run () {
   const protectedBranches = ['master'];
 
   const branches = await getBranches({ verbose: true });
+
+  if (branches.length === 1) {
+    console.log(colors.yellow('Only one branch exists'));
+    process.exit(0);
+  }
+  
   const tickets = await getTickets();
 
   const choices = branches.map(({ flag, branch }) => {
