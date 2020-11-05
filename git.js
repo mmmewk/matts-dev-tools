@@ -27,6 +27,7 @@ async function checkout(branch, options = {}) {
   if (!branch) return;
   let migrateUp = false;
   if (options.migrate && await prompt(migrationPrompt)) {
+    // current branches migrations, oldest common migration between the two, and other branches migration
     let { current, common, other } = await diffMigrations(branch, options);
     if (current !== undefined) {
       await migrate({ version: common, ...options });

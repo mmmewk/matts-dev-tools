@@ -6,5 +6,3 @@
   - Rails Migration functions
   - Git functions
   - Jira functions
-
-- 
