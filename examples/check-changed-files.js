@@ -5,8 +5,8 @@
 // and runs the series of commands that the user wants on changed files
 // user can choose to test the changes made since last commit or since master
 
-const { runInteractive, getChangedFiles, promptSelect, scriptError } = require('matts-dev-tools/utils');
-const { getCurrentBranch } = require('matts-dev-tools/git');
+const { runInteractive, getChangedFiles, promptSelect, scriptError } = require('../src/utils');
+const { getCurrentBranch } = require('../src/git');
 const fs = require('fs');
 
 async function run () {
