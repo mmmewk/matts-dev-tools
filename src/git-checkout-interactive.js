@@ -42,6 +42,9 @@ async function run () {
   });
 
   let branch = await promptSelect('Switch Branch', choices, { warn: 'current branch' });
+
+  if (!branch) process.exit(0);
+
   const create = branch.create;
 
   if (branch.create) {

@@ -24,8 +24,12 @@ async function diffMigrations(branch, options) {
   const removedFiles = await getChangedFiles({ extensions: ['.rb'], types: ['D'], branch, ...options });
   const added = getMigrationVersions(addedFiles);
   const removed = getMigrationVersions(removedFiles);
-  const common = all.filter(migration => !added.includes(migration));
-  return { current: added.pop(), other: removed.pop(), common: common.pop() };
+  const youngestAdded = added.shift();
+  const youngestRemoved = removed.shift();
+  // for common migration get the last migration before the youngest new migration
+  const common = all.filter(migration => migration < youngestAdded);
+  
+  return { current: added.pop() || youngestAdded, other: removed.pop(), common: common.pop() };
 }
 
 async function migrate(options = {}) {
