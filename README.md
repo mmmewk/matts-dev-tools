@@ -60,3 +60,8 @@ Boots up an interactive terminal where you can clean out old branches.
 - getCurrentBranch returns current branch name
 - getBranches returns branch objects with flag, branch name and commit info
 - checkout checks if other branch has differences in database migrations, migrates database properly, checkouts out other branch (or creates if in create mode), migrates up if neeeded
+
+# Related
+- [git-checkout-interactive](https://github.com/CookPete/git-checkout-interactive)
+- [prompts](https://github.com/terkelg/prompts)
+- [ora](https://github.com/sindresorhus/ora)
