@@ -1,6 +1,6 @@
 {
   "name": "matts-dev-tools",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Developer tools for rails developers using git and jira",
   "main": "src/utils.js",
   "repository": "https://github.com/mmmewk/matts-dev-tools.git",
