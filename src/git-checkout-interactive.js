@@ -53,7 +53,7 @@ async function run () {
   });
 
   let branch = await promptSelect(
-    'Switch Branch',
+    'Switch Branch ("o" to open ticket in jira)',
     choices,
     {
       warn: 'current branch',
