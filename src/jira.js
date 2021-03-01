@@ -2,7 +2,7 @@ const { exec, log } = require('./utils');
 const colors = require('colors');
 const commandExists = require('command-exists').sync;
 
-const ticketRegex = /\w+-\d{4}/;
+const ticketRegex = /\w+-\d+/;
 
 async function getTickets() {
   if (!commandExists('jira')) {

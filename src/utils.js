@@ -7,11 +7,25 @@ const prompts = require('prompts');
 const spinnerColors = ['yellow', 'blue', 'magenta', 'cyan'];
 const sample = require('lodash/sample');
 const fs = require('fs');
+const readline = require('readline');
 
 const colors = require('colors');
 
 function log(msg) {
   if (process.env.NODE_ENV !== 'test') console.log(msg);
+}
+
+function enableKeypressListeners() {
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+}
+
+function addKeypressListener(func) {
+  return process.stdin.on('keypress', func);
+}
+
+function removeKeypressListener(func) {
+  process.stdin.removeListener('keypress', func);
 }
 
 async function runInteractive(commands, options = {}) {
@@ -24,7 +38,7 @@ async function runInteractive(commands, options = {}) {
     ...options,
   });
 
-  if (!steps) return;
+  if (!steps) return 1;
   const exitCodes = []
 
   // if a single step fails stop the entire process
@@ -123,10 +137,12 @@ async function promptSelect(message, choices, options) {
     message,
     choices: transformedChoices,
     hint: transformedChoices[0].hint,
-    onState ({ value }) {
-      this.hint = transformedChoices.find(c => c.value === value).hint
-    },
     ...options,
+    onState ({ value }) {
+      const choice = transformedChoices.find(c => c.value === value);
+      this.hint = choice.hint
+      if (options && options.onState) options.onState(choice);
+    },
   });
 
   return selected;
@@ -157,6 +173,9 @@ function scriptError (e) {
 module.exports = {
   runInteractive,
   execCommand,
+  enableKeypressListeners,
+  addKeypressListener,
+  removeKeypressListener,
   prompt,
   promptSelect,
   inContext,

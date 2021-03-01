@@ -44,6 +44,7 @@ async function checkout(branch, options = {}) {
   const command = `git checkout ${options.create ? '-b' : ''} ${branch}`;
   const action = options.create ? 'Create' : 'Checkout';
   const success = await execCommand(command, { context: `${action} ${branch}` });
+  if (options.pull) await execCommand('git pull', { context: 'Update base branch' });
   if (migrateUp) await migrate({ ...options });
   return success;
 }

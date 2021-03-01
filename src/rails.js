@@ -25,7 +25,7 @@ async function diffMigrations(branch, options) {
   const added = getMigrationVersions(addedFiles);
   const removed = getMigrationVersions(removedFiles);
   const youngestAdded = added.shift();
-  const youngestRemoved = removed.shift();
+
   // for common migration get the last migration before the youngest new migration
   const common = all.filter(migration => migration < youngestAdded);
   
