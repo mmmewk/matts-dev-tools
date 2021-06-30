@@ -43,7 +43,7 @@ async function run () {
 
   // any tickets with not associated branch
   Object.values(tickets).forEach((ticket) => {
-    title = `Create Branch for ${ticket.num}: ${colors.blue(ticket?.summary)}`;
+    title = `Create Branch for ${ticket.num}: ${colors.blue(ticket.summary)}`;
     choices.push({ title, value: { num: ticket.num, create: true }, hint: ticket.summary, ticket });
   });
 
