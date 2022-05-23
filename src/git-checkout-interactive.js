@@ -30,11 +30,16 @@ async function run () {
     process.exit(0);
   }
 
+  const existingTicketBranches = {};
+
   let currentBranch;
   const choices = branches.map(({ flag, branch, commitInfo }) => {
     const ticket = findTicket(branch, tickets);
     // keep track of which tickets are assigned to branches
-    if (ticket) delete tickets[ticket.num];
+    if (ticket) {
+      if (!existingTicketBranches[ticket.num]) existingTicketBranches[ticket.num] = 0;
+      existingTicketBranches[ticket.num] += 1;
+    }
     if (flag === '*') currentBranch = branch;
     title = branch;
     if (ticket) title += `: ${colors.blue(ticket.summary)}`;
@@ -43,8 +48,14 @@ async function run () {
 
   // any tickets with not associated branch
   Object.values(tickets).forEach((ticket) => {
-    title = `Create Branch for ${ticket.num}: ${colors.blue(ticket.summary)}`;
-    choices.push({ title, value: { num: ticket.num, create: true }, hint: ticket.summary, ticket });
+    if (!existingTicketBranches[ticket.num]) {
+      title = `Create Branch for ${ticket.num}: ${colors.blue(ticket.summary)}`;
+      choices.push({ title, value: { num: ticket.num, create: true }, hint: ticket.summary, ticket });
+    } else {
+      const part = existingTicketBranches[ticket.num] + 1
+      title = `Create Branch for ${ticket.num} Part ${part}: ${colors.blue(ticket.summary)}`;
+      choices.push({ title, value: { num: ticket.num, create: true, part }, hint: ticket.summary, ticket });
+    }
   });
 
   let currentTicket = null;
@@ -80,10 +91,12 @@ async function run () {
                              })
 
   if (branch.create) {
-    const ticketType = await promptSelect('What type of ticket is this?', ['feature', 'bug', 'chore', 'hotfix', 'refactor']);
-    baseBranch = await promptSelect('Select a base branch', baseChoices)
-    branch = `${ticketType}/${branch.num}`;
-    if (!ticketType) process.exit(1);
+    baseBranch = await promptSelect('Select a base branch', baseChoices);
+    if (branch.part) {
+      branch = `${branch.num}-part-${branch.part}`;
+    } else {
+      branch = branch.num;
+    }
   }
 
   // TODO: set up a configuration file so users can explicitly set this on a project to project basis
